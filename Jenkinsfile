@@ -7,7 +7,7 @@ pipeline {
         CLUSTER_NAME = 'capstone-aks'
         IMAGE_REPO_NAME='chatapp'
         IMAGE_TAG='latest'
-        IMAGE_URI=''
+        IMAGE_URI='nginx:latest'
         // TODO set url
     }
     stages {
