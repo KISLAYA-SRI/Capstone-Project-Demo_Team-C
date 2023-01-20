@@ -5,9 +5,9 @@ metadata:
   labels:                     
     app: chat-service       
 spec:                         
-  type: LoadBalancer              
+  type: ClusterIP              
   selector:
-    app: chat-service      
+    app: chat-app      
   ports:                      
   - name: http
     port: 8080    

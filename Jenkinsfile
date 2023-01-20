@@ -5,10 +5,11 @@ pipeline {
         DOMAIN = 'chatapp'   
         RESOURCE_GROUP = 'capstone-rg'   
         CLUSTER_NAME = 'capstone-aks'
-        IMAGE_REPO_NAME='chatapp'
-        IMAGE_TAG='latest'
-        IMAGE_URI='nginx:latest'
-        // TODO set url
+        IMAGE_REPO_NAME='capstoneprojectdemoacr'
+        IMAGE_NAME='nginx'
+        IMAGE_TAG='v1'
+        IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"
+        
     }
     stages {
         stage('Git Checkout') {
