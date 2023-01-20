@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: chat-server
+  name: chat-server-ingress
   annotations:
     kubernetes.io/ingress.class: addon-http-application-routing
 spec:
@@ -11,7 +11,7 @@ spec:
         paths:
           - backend:
               service:
-               name: chat-server
+               name: chat-service
                port:
                  number: 8080
             path: /

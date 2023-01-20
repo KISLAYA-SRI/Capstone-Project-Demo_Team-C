@@ -1,15 +1,19 @@
 pipeline {
     agent any    
     environment {
-        RELEASE_NAME = 'nginx-ingress'  
+        RELEASE_NAME = 'chatapp'  
         DOMAIN = 'chatapp'   
         RESOURCE_GROUP = 'capstone-rg'   
         CLUSTER_NAME = 'capstone-aks'
+        IMAGE_REPO_NAME='chatapp'
+        IMAGE_TAG='latest'
+        IMAGE_URI=''
+        // TODO set url
     }
     stages {
         stage('Git Checkout') {
             steps {
-                git credentialsId: '', url: ''
+                git credentialsId: 'git-ssh-key', url: 'git@github.com:KISLAYA-SRI/Capstone-Project-Demo_Team-C.git'
             }
         }
                         
@@ -25,18 +29,13 @@ pipeline {
                 }
             }
             
-        }        
-        stage('Ansible: Deployment') {            
-            steps{                
-                ansiblePlaybook colorized: true, disableHostKeyChecking: true, playbook: 'ansible/deployment.yaml'                                
-            }
-        }
-        stage('Installing Helm Chart') {  
+        }                
+        stage('Deploying Helm Charts') {  
             script {
                     dir('helm/') {
                         sh''' 
                         HOST_NAME=$DOMAIN.$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table)  
-                        helm install $RELEASE_NAME . --set hostname=$HOST_NAME
+                        helm install $RELEASE_NAME . --set hostname=$HOST_NAME image=$IMAGE_URI
                         '''
                     }
                 }                     
@@ -47,7 +46,7 @@ pipeline {
                 echo "Waiting for end point..."
                 sleep 10
                 EXTERNAL_IP=$(kubectl get svc $RELEASE_NAME -o yaml | grep -oP '(?<=ip: )[0-9].+')
-                echo 'End point ready:' && echo $EXTERNAL_IP
+                echo 'End point ready:' && echo $EXTERNAL_IP                
                 echo "URL: http://$HOST_NAME"
                 '''
             }
