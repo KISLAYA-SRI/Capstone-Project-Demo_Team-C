@@ -32,14 +32,17 @@ pipeline {
             
         }                
         stage('Deploying Helm Charts') {  
-            script {
+            steps {
+                script {
                     dir('helm/') {
                         sh''' 
                         HOST_NAME=$DOMAIN.$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table)  
                         helm install $RELEASE_NAME . --set hostname=$HOST_NAME image=$IMAGE_URI
                         '''
                     }
-                }                     
+                }  
+            }
+                               
         }
         stage('Verify Deployments') {            
             steps{
