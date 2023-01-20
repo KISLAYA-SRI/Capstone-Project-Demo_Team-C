@@ -36,8 +36,11 @@ pipeline {
                 script {
                     dir('helm/') {
                         sh''' 
-                        HOST_NAME=$DOMAIN.$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table)  
-                        helm install $RELEASE_NAME . --set hostname=$HOST_NAME image=$IMAGE_URI
+                        HOST_NAME=$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table)  
+                        echo $HOST_NAME
+                        export HOST_DOMAIN=$DOMAIN.$HOST_NAME
+                        echo $HOST_DOMAIN
+                        helm install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
                         '''
                     }
                 }  
@@ -51,7 +54,7 @@ pipeline {
                 sleep 10
                 EXTERNAL_IP=$(kubectl get svc $RELEASE_NAME -o yaml | grep -oP '(?<=ip: )[0-9].+')
                 echo 'End point ready:' && echo $EXTERNAL_IP                
-                echo "URL: http://$HOST_NAME"
+                echo "URL: http://$HOST_DOMAIN"
                 '''
             }
         }
