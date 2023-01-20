@@ -52,8 +52,10 @@ pipeline {
             steps{
                 sh'''                               
                 echo "Waiting for end point..."
-                sleep 10                               
-                echo "URL: http://$HOST_DOMAIN"
+                sleep 10
+                ENTRY_POINT=${kubectl get ingress -o yaml | grep 'host'}
+                ENTRY_POINT=${ENTRY_POINT#*: }                                 
+                echo "URL: http://$ENTRY_POINT"
                 '''
             }
         }
