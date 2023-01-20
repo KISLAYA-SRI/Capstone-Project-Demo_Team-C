@@ -41,7 +41,7 @@ pipeline {
                         echo $HOST_NAME
                         HOST_DOMAIN=$DOMAIN.$HOST_NAME
                         echo $HOST_DOMAIN
-                        helm install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
+                        helm upgrade $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
                         '''
                     }
                 }  
