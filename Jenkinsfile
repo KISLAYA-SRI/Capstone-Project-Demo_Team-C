@@ -14,7 +14,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git credentialsId: 'git-ssh-key', url: 'git@github.com:KISLAYA-SRI/Capstone-Project-Demo_Team-C.git'
+                git credentialsId: 'github-ssh-key', url: 'git@github.com:KISLAYA-SRI/Capstone-Project-Demo_Team-C.git'
             }
         }
                         
