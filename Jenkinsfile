@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Git Checkout') {
             steps {
-                git credentialsId: '', url: ''
+                git credentialsId: '', url: 'https://github.com/KISLAYA-SRI/Capstone-Project-Demo_Team-C.git'
             }
         }
                         
