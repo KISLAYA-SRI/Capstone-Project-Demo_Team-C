@@ -36,7 +36,7 @@ pipeline {
                 script {
                     dir('helm/') {
                         sh''' 
-                        HOST_NAME=$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName -o table)  
+                        HOST_NAME=$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName)  
                         echo $HOST_NAME
                         export HOST_DOMAIN=$DOMAIN.$HOST_NAME
                         echo $HOST_DOMAIN
