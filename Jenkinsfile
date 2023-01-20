@@ -9,6 +9,7 @@ pipeline {
         IMAGE_NAME='nginx'
         IMAGE_TAG='v1'
         IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"
+        HOST_DOMAIN = ""
         
     }
     stages {
@@ -38,7 +39,7 @@ pipeline {
                         sh''' 
                         HOST_NAME=$(az aks show --resource-group $RESOURCE_GROUP --name $CLUSTER_NAME --query addonProfiles.httpApplicationRouting.config.HTTPApplicationRoutingZoneName | tr -d '"')  
                         echo $HOST_NAME
-                        export HOST_DOMAIN=$DOMAIN.$HOST_NAME
+                        HOST_DOMAIN=$DOMAIN.$HOST_NAME
                         echo $HOST_DOMAIN
                         helm install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
                         '''
@@ -51,9 +52,7 @@ pipeline {
             steps{
                 sh'''                               
                 echo "Waiting for end point..."
-                sleep 10
-                EXTERNAL_IP=$(kubectl get svc $RELEASE_NAME -o yaml | grep -oP '(?<=ip: )[0-9].+')
-                echo 'End point ready:' && echo $EXTERNAL_IP                
+                sleep 10                               
                 echo "URL: http://$HOST_DOMAIN"
                 '''
             }
