@@ -6,10 +6,9 @@ pipeline {
         RESOURCE_GROUP = 'capstone-rg'   
         CLUSTER_NAME = 'capstone-aks'
         IMAGE_REPO_NAME='capstoneprojectdemoacr'
-        IMAGE_NAME='nginx'
-        IMAGE_TAG='v1'
-        IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"
-        HOST_DOMAIN = ""
+        IMAGE_NAME='chatapp'
+        IMAGE_TAG='latest'
+        IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"        
         
     }
     stages {
@@ -41,7 +40,7 @@ pipeline {
                         echo $HOST_NAME
                         HOST_DOMAIN=$DOMAIN.$HOST_NAME
                         echo $HOST_DOMAIN
-                        helm upgrade $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
+                        helm upgrade --install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
                         '''
                     }
                 }  
