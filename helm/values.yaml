@@ -1,2 +1,4 @@
 hostname: chatapp.34a5a0f30cc544829187.eastus.aksapp.io
 image: callicoder/spring-boot-websocket-chat-demo:0.0.1-SNAPSHOT
+minReplicas: 1  
+maxReplicas: 3  

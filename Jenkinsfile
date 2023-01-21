@@ -8,7 +8,9 @@ pipeline {
         IMAGE_REPO_NAME='capstoneprojectdemoacr'
         IMAGE_NAME='chatapp'
         IMAGE_TAG='latest'
-        IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"        
+        IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"  
+        MIN_REPLICA = 1      
+        MAX_REPLICA = 3    
         
     }
     stages {
@@ -40,7 +42,7 @@ pipeline {
                         echo $HOST_NAME
                         HOST_DOMAIN=$DOMAIN.$HOST_NAME
                         echo $HOST_DOMAIN
-                        helm upgrade --install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI
+                        helm upgrade --install $RELEASE_NAME . --set hostname=$HOST_DOMAIN --set image=$IMAGE_URI --set minReplicas=$MIN_REPLICA --set maxReplicas=$MAX_REPLICA
                         '''
                     }
                 }  
