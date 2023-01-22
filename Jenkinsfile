@@ -6,6 +6,7 @@ pipeline {
         RESOURCE_GROUP = 'capstone-rg'   
         CLUSTER_NAME = 'capstone-aks'
         IMAGE_REPO_NAME='capstoneprojectdemoacr'
+        LABEL='chat-app'
         IMAGE_NAME='chatapp'
         IMAGE_TAG='latest'
         IMAGE_URI="${IMAGE_REPO_NAME}.azurecr.io/${IMAGE_NAME}:${IMAGE_TAG}"  
@@ -53,7 +54,7 @@ pipeline {
             steps{
                 sh'''                               
                 echo "Waiting for end point..."
-                kubectl wait --for=condition=ready pod -l app=$RELEASE_NAME
+                kubectl wait --for=condition=ready pod -l app=$LABEL
                 ENTRY_POINT=$(kubectl get ingress -o yaml | grep 'host')
                 ENTRY_POINT=${ENTRY_POINT#*: }     
                 curl -Is http://$ENTRY_POINT | head -1                            
