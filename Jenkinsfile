@@ -56,8 +56,9 @@ pipeline {
                 echo "Waiting for end point..."
                 kubectl wait --for=condition=ready pod -l app=$LABEL
                 ENTRY_POINT=$(kubectl get ingress -o yaml | grep 'host')
-                ENTRY_POINT=${ENTRY_POINT#*: }     
-                curl -Is http://$ENTRY_POINT | head -1                            
+                ENTRY_POINT=${ENTRY_POINT#*: }  
+                sleep 5   
+                echo "$(curl -Is http://$ENTRY_POINT | head -1)"                       
                 echo "URL: http://$ENTRY_POINT"
                 '''
             }
