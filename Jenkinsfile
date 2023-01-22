@@ -64,7 +64,7 @@ pipeline {
         stage("Clean up"){
             
             steps{
-                    sh 'sudo rm ~/.kube/config'
+                    sh 'rm /var/lib/jenkins/.kube/config'
                 }
         }
         
