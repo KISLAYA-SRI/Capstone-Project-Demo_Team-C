@@ -61,9 +61,18 @@ pipeline {
                 '''
             }
         }
+        stage("Clean up"){
+            
+            steps{
+                    sh 'sudo rm ~/.kube/config'
+                }
+        }
+        
         
 
     }
 
     
 }
+
+
